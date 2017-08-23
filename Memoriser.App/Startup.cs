@@ -1,10 +1,19 @@
+using Memoriser.App.Commands;
+using Memoriser.App.Commands.Commands;
+using Memoriser.App.Commands.Handlers;
+using Memoriser.App.Query;
+using Memoriser.App.Query.Handlers;
+using Memoriser.App.Query.Queries;
+using Memoriser.ApplicationCore.Models;
+using Memoriser.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Memoriser_App
+namespace Memoriser.App
 {
     public class Startup
     {
@@ -18,6 +27,13 @@ namespace Memoriser_App
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<LearningItemContext>(options =>
+                options.UseSqlServer(Configuration["DefaultConnection"]));
+
+            services.AddTransient<LearningItemContext>();
+            services.AddTransient<IAsyncQueryHandler<GetRequiredLearningItemsQuery, LearningItem[]>, GetRequiredLearningItemsQueryHandler>();
+            services.AddTransient<IAsyncCommandHandler<AddWordCommand>, AddWordCommandHandler>();
+
             services.AddMvc();
         }
 

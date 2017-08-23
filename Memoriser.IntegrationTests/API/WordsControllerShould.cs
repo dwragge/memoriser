@@ -1,11 +1,11 @@
 ﻿using FluentAssertions;
-using Memoriser_App;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Memoriser.App;
 using Xunit;
 
 namespace Memoriser.IntegrationTests.API
@@ -25,7 +25,7 @@ namespace Memoriser.IntegrationTests.API
         [Fact]
         public async Task ReturnListOfWords()
         {
-            var response = await _httpClient.GetAsync("/api/words");
+            HttpResponseMessage response = await _httpClient.GetAsync("/api/words");
             response.EnsureSuccessStatusCode();
 
             var responseString = await response.Content.ReadAsStringAsync();
