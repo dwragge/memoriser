@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Memoriser.ApplicationCore\Memoriser.ApplicationCore.csproj" />
     <ProjectReference Include="..\Memoriser.App\Memoriser.App.csproj" />
   </ItemGroup>
 

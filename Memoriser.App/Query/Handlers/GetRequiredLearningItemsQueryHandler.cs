@@ -1,11 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Memoriser.App.Query.Queries;
+using Memoriser.ApplicationCore.Models;
 
 namespace Memoriser.App.Query.Handlers
 {
-    public class GetRequiredLearningItemsQueryHandler
+    public class GetRequiredLearningItemsQueryHandler : IQueryHandler<GetRequiredLearningItemsQuery, LearningItem[]>
     {
+        public GetRequiredLearningItemsQueryHandler()
+        {
+
+        }
+
+        public LearningItem[] Handle(GetRequiredLearningItemsQuery query)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

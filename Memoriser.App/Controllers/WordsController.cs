@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Memoriser.App.Query.Queries;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace Memoriser.App.Controllers
         [HttpGet]
         public IEnumerable<string> Words()
         {
+            var query = new GetRequiredLearningItemsQuery();
             return new List<string>
             {
                 "hello", "bonjour", "le monde"
