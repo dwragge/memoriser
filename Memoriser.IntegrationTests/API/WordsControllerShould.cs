@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Memoriser.App;
+using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace Memoriser.IntegrationTests.API
@@ -18,7 +19,9 @@ namespace Memoriser.IntegrationTests.API
         public WordsControllerShould()
         {
             _server = new TestServer(new WebHostBuilder()
-                .UseStartup<Startup>());
+                .UseStartup<Startup>()
+                .ConfigureAppConfiguration(builder => 
+                    builder.AddJsonFile("appsettings.json")));
             _httpClient = _server.CreateClient();
         }
 

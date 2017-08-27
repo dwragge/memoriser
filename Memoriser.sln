@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.8
+VisualStudioVersion = 15.0.26730.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Memoriser.ApplicationCore", "Memoriser.ApplicationCore\Memoriser.ApplicationCore.csproj", "{E61521F1-E85F-4798-BC81-0FAEB3439112}"
 EndProject
@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Memoriser.UnitTests", "Memo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{256784D7-868E-4B64-8945-9BEB52061E91}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Memoriser.IntegrationTests", "Memoriser.IntegrationTests\Memoriser.IntegrationTests.csproj", "{F12930CE-41D2-4FF3-8D61-672DE998CCB2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Memoriser.IntegrationTests", "Memoriser.IntegrationTests\Memoriser.IntegrationTests.csproj", "{F12930CE-41D2-4FF3-8D61-672DE998CCB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Memoriser.App", "Memoriser.App\Memoriser.App.csproj", "{5596354A-6E02-424C-8550-0247CCAB67AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Memoriser.App", "Memoriser.App\Memoriser.App.csproj", "{5596354A-6E02-424C-8550-0247CCAB67AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

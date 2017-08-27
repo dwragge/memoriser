@@ -29,4 +29,8 @@
     <ProjectReference Include="..\Memoriser.App\Memoriser.App.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="1.0.1" />
+  </ItemGroup>
+
 </Project>
