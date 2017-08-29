@@ -1,0 +1,8 @@
+language: csharp
+mono: none
+dotnet: 2.0.0
+dist: trusty
+script:
+ - (cd Memoriser.App && npm install)
+ - dotnet build
+ - (cd Memoriser.UnitTests && dotnet test --no-build --no-restore)
