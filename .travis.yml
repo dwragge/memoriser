@@ -3,6 +3,6 @@ mono: none
 dotnet: 2.0.0
 dist: trusty
 script:
- - npm install ./Memoriser.App/
+ - (cd Memoriser.App && npm install)
  - dotnet build
  - dotnet test ./Memoriser.UnitTests\Memoriser.UnitTests.csproj --no-build --no-restore
