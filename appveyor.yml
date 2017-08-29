@@ -9,6 +9,7 @@ init:
 install:
   - cmd: cd Memoriser.App
   - cmd: npm install
+  - cmd: cd ..
 before_build:
   - cmd: dotnet --version
 build_script:
