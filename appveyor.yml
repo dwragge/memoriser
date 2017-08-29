@@ -1,0 +1,24 @@
+version: '1.0.{build}'
+image: Visual Studio 2017
+branches:
+  only:
+  - master
+init:
+  # Good practise, because Windows line endings are different from Unix/Linux ones
+  - cmd: git config --global core.autocrlf true
+install:
+  - cmd: cd Memoriser.App
+  - cmd: npm install
+before_build:
+  - cmd: dotnet --version
+build_script:
+  - cmd: dotnet build
+after_build:
+  # For once the build has completed
+clone_depth: 1
+test_script:
+  - cmd: cd Memoriser.UnitTests
+  - cmd: dotnet test --no-build --no-restore
+on_finish :
+  # any cleanup in here
+deploy: off
