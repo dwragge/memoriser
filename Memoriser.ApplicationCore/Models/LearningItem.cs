@@ -26,6 +26,11 @@ namespace Memoriser.ApplicationCore.Models
             Interval = RepetitionInterval.NewDefault();
         }
 
+        public LearningItem(string word, string answer)
+            : this(word, new[] { answer })
+        {
+        }
+
         private LearningItem()
         {
         }
