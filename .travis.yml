@@ -5,4 +5,4 @@ dist: trusty
 script:
  - (cd Memoriser.App && npm install)
  - dotnet build
- - dotnet test ./Memoriser.UnitTests\Memoriser.UnitTests.csproj --no-build --no-restore
+ - (cd Memoriser.UnitTests && dotnet test --no-build --no-restore)
