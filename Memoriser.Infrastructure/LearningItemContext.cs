@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Memoriser.ApplicationCore.Models;
+﻿using Memoriser.ApplicationCore.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Memoriser.Infrastructure

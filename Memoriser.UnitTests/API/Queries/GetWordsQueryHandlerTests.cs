@@ -11,7 +11,7 @@ using FluentAssertions;
 
 namespace Memoriser.UnitTests.API.Queries
 {
-    public class GetRequiredLearningItemsQueryHandlerTests
+    public class GetWordsQueryHandlerTests
     {
         [Fact]
         public async Task Should_ReturnAllItems()

@@ -42,17 +42,20 @@ namespace Memoriser.UnitTests.API.Controllers
                 Word = word,
                 Answers = answers
             };
-            
-            var mockHandler = new Mock<ICommandDispatcher>();
-            mockHandler.Setup(x => x.DispatchAsync(It.IsAny<AddWordCommand>())).Returns(Task.FromResult(0));
-            var controller = new WordsController(null, mockHandler.Object);
+            var mockDispatcher = new Mock<ICommandDispatcher>();
+            mockDispatcher.Setup(x => x.DispatchAsync(It.IsAny<AddWordCommand>()))
+                .Returns(Task.FromResult(0));
+            var mockHandler = new Mock<IQueryProcessor>();
+            mockHandler.Setup(x => x.ProcessAsync(It.IsAny<GetWordByNameQuery>()))
+                .Returns(Task.FromResult(new LearningItem("nouvelle", "new")));
+            var controller = new WordsController(mockHandler.Object, mockDispatcher.Object);
 
             var result = await controller.AddWord(data);
 
             result.Should().BeOfType<CreatedResult>();
             var createdResult = (CreatedResult)result;
             createdResult.StatusCode.Should().Be(201);
-            createdResult.Location.Should().MatchRegex(@"\/Words\/[{(]?[0-9A-F]{8}[-]?([0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?");
+            createdResult.Location.Should().MatchRegex(@"\/Words\/[{(]?[0-9A-Fa-f]{8}[-]?([0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}[)}]?");
         }
 
         [Theory]

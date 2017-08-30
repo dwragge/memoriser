@@ -24,6 +24,7 @@ namespace Memoriser.ApplicationCore.Models
             ToBeGuessed = word;
             _acceptedAnswers = string.Join(',', acceptedAnswers);
             Interval = RepetitionInterval.NewDefault();
+            Id = Guid.NewGuid();
         }
 
         public LearningItem(string word, string answer)

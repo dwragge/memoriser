@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Memoriser.App.Query.Queries;
+﻿using Memoriser.App.Query.Queries;
 using Memoriser.ApplicationCore.Models;
 using Memoriser.Infrastructure;
 using Microsoft.EntityFrameworkCore;

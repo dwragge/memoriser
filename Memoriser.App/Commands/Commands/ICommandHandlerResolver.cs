@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Memoriser.App.Commands.Commands
+﻿namespace Memoriser.App.Commands.Commands
 {
     public interface ICommandHandlerResolver
     {

@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Memoriser.ApplicationCore.Models;
+﻿using Memoriser.ApplicationCore.Models;
 
 namespace Memoriser.App.Query.Queries
 {

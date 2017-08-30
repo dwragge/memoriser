@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Memoriser.ApplicationCore.Models
+﻿namespace Memoriser.ApplicationCore.Models
 {
     public enum ResponseQuality
     {

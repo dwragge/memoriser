@@ -47,8 +47,12 @@ namespace Memoriser.App.Controllers
 
             var command = new AddWordCommand(postData.Word, postData.Answers);
             await _commandDispatcher.DispatchAsync(command);
-            var currentUri = Url.RouteUrl(RouteData.Values);
-            return new CreatedResult("", "");
+
+            var query = new GetWordByNameQuery(postData.Word);
+            var createdItem = await _queryProcessor.ProcessAsync(query);
+
+            string currentUri = Request?.Path ?? "/Words";
+            return new CreatedResult(currentUri.JoinPaths(createdItem.Id.ToString()), createdItem);
         }
     }
 }

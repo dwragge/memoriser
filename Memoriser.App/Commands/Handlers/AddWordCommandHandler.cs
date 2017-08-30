@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Memoriser.App.Commands.Commands;
 using Memoriser.ApplicationCore.Models;
 using Memoriser.Infrastructure;
