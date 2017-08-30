@@ -3,6 +3,9 @@ image: Visual Studio 2017
 branches:
   only:
   - master
+environment:
+  - COVERALLS_REPO_TOKEN:
+      secure: DSbDszuVgmNUHt2HFmskWQs0RYlmZ1EZ4
 init:
   # Good practise, because Windows line endings are different from Unix/Linux ones
   - cmd: git config --global core.autocrlf true
@@ -18,8 +21,14 @@ after_build:
   # For once the build has completed
 clone_depth: 1
 test_script:
-  - cmd: cd Memoriser.UnitTests
-  - cmd: dotnet test --no-build --no-restore
+  - cmd: mkdir coverage
+  - cmd: dotnet add .\Memoriser.UnitTests\Memoriser.UnitTests.csproj package OpenCover --package-directory packages
+  - cmd: dotnet add .\Memoriser.UnitTests\Memoriser.UnitTests.csproj package ReportGenerator --package-directory packages
+  - cmd: dotnet add .\Memoriser.UnitTests\Memoriser.UnitTests.csproj package coveralls.net --package-directory packages
+  - cmd: dotnet test Memoriser.UnitTests\Memoriser.UnitTests.csproj -c Release --no-build --no-restore
+  - cmd: packages\opencover\4.6.519\tools\OpenCover.Console.exe -target:"dotnet.exe" -targetargs:"test -c Release Memoriser.UnitTests\Memoriser.UnitTests.csproj" -mergeoutput -output:coverage/coverage.xml -oldStyle -filter:"+[Memoriser*]* -[Memoriser.UnitTests*]*" -hideskipped:File -register:user -searchdirs:Memoriser.UnitTests\bin\Release\netcoreapp2.0
+  - cmd: packages\reportgenerator\2.5.11\tools\ReportGenerator.exe -reports:coverage\coverage.xml -targetdir:coverage -verbosity:Error
+  - cmd: packages\coveralls.net\0.412.0\tools\csmacnz.Coveralls.exe --opencover -i coverage\coverage.xml --useRelativePaths
 on_finish :
   # any cleanup in here
 deploy: off

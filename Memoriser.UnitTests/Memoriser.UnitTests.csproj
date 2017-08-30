@@ -1,12 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-
     <IsPackable>false</IsPackable>
   </PropertyGroup>
-
   <ItemGroup>
+    <PackageReference Include="coveralls.net" Version="0.412" />
     <PackageReference Include="FluentAssertions" Version="4.19.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0-preview-20170628-02" />
@@ -14,11 +12,9 @@
     <PackageReference Include="xunit" Version="2.2.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Memoriser.ApplicationCore\Memoriser.ApplicationCore.csproj" />
     <ProjectReference Include="..\Memoriser.App\Memoriser.App.csproj" />
     <ProjectReference Include="..\Memoriser.Infrastructure\Memoriser.Infrastructure.csproj" />
   </ItemGroup>
-
 </Project>
