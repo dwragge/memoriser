@@ -31,7 +31,7 @@ namespace Memoriser.App
                 options.UseSqlServer(Configuration["DefaultConnection"]));
 
             services.AddTransient<LearningItemContext>();
-            services.AddTransient<IAsyncQueryHandler<GetRequiredLearningItemsQuery, LearningItem[]>, GetRequiredLearningItemsQueryHandler>();
+            services.AddTransient<IAsyncQueryHandler<GetWordsQuery, LearningItem[]>, GetWordsQueryHandler>();
             services.AddTransient<IAsyncCommandHandler<AddWordCommand>, AddWordCommandHandler>();
 
             services.AddMvc();

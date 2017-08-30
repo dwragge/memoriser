@@ -38,8 +38,8 @@ namespace Memoriser.UnitTests.API.Queries
 
             using (var context = new LearningItemContext(options))
             {
-                var handler = new GetRequiredLearningItemsQueryHandler(context);
-                var result = await handler.HandleAsync(new GetRequiredLearningItemsQuery());
+                var handler = new GetWordsQueryHandler(context);
+                var result = await handler.HandleAsync(new GetWordsQuery());
                 result.ToList().ShouldAllBeEquivalentTo(items);
             }
         }

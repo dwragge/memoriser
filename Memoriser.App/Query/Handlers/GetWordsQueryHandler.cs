@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace Memoriser.App.Query.Handlers
 {
-    public class GetRequiredLearningItemsQueryHandler : IAsyncQueryHandler<GetRequiredLearningItemsQuery, LearningItem[]>
+    public class GetWordsQueryHandler : IAsyncQueryHandler<GetWordsQuery, LearningItem[]>
     {
         private readonly LearningItemContext _context;
-        public GetRequiredLearningItemsQueryHandler(LearningItemContext context)
+        public GetWordsQueryHandler(LearningItemContext context)
         {
             _context = context;
         }
 
-        public async Task<LearningItem[]> HandleAsync(GetRequiredLearningItemsQuery query)
+        public async Task<LearningItem[]> HandleAsync(GetWordsQuery query)
         {
             return await _context.LearningItems
                 .Include(x => x.Interval)

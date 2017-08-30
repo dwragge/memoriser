@@ -11,10 +11,10 @@ namespace Memoriser.App.Controllers
     [Route("api/[controller]")]
     public class WordsController
     {
-        private readonly IAsyncQueryHandler<GetRequiredLearningItemsQuery, LearningItem[]> _getItemsHandler;
+        private readonly IAsyncQueryHandler<GetWordsQuery, LearningItem[]> _getItemsHandler;
         private readonly IAsyncCommandHandler<AddWordCommand> _AddItemHandler;
 
-        public WordsController(IAsyncQueryHandler<GetRequiredLearningItemsQuery, LearningItem[]> handler, IAsyncCommandHandler<AddWordCommand> addHandler1)
+        public WordsController(IAsyncQueryHandler<GetWordsQuery, LearningItem[]> handler, IAsyncCommandHandler<AddWordCommand> addHandler1)
         {
             _getItemsHandler = handler;
             _AddItemHandler = addHandler1;
@@ -23,7 +23,7 @@ namespace Memoriser.App.Controllers
         [HttpGet]
         public async Task<LearningItem[]> Words()
         {
-            var query = new GetRequiredLearningItemsQuery();
+            var query = new GetWordsQuery();
             return await _getItemsHandler.HandleAsync(query);
         }
 
