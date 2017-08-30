@@ -10,6 +10,8 @@ namespace Memoriser.App.Query
             var assembly = Assembly.GetExecutingAssembly();
             builder.RegisterAssemblyTypes(assembly)
                 .AsClosedTypesOf(typeof(IAsyncQueryHandler<,>));
+
+            builder.RegisterType<QueryProcessor>().As<IQueryProcessor>();
         }
     }
 }

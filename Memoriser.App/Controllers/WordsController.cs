@@ -14,22 +14,21 @@ namespace Memoriser.App.Controllers
     [Route("api/[controller]")]
     public class WordsController : Controller
     {
-        private readonly IAsyncQueryHandler<GetWordsQuery, LearningItem[]> _getItemsHandler;
-        private readonly IAsyncCommandHandler<AddWordCommand> _AddItemHandler;
-        private readonly IQueryHandlerResolver _queryResolver;
+        private readonly ICommandDispatcher _commandDispatcher;
+        private readonly IQueryProcessor _queryProcessor;
 
-        public WordsController(IAsyncQueryHandler<GetWordsQuery, LearningItem[]> handler, IAsyncCommandHandler<AddWordCommand> addHandler1)
+        public WordsController(IQueryProcessor queryProcessor, ICommandDispatcher commandDispatcher)
         {
-            _getItemsHandler = handler;
-            _AddItemHandler = addHandler1;
+            _commandDispatcher = commandDispatcher;
+            _queryProcessor = queryProcessor;
         }
 
         [HttpGet]
         public async Task<LearningItem[]> Words()
         {
             var query = new GetWordsQuery();
-            var handler = _queryResolver.Resolve(query);
-            return await handler.HandleAsync(query);
+            var result = await _queryProcessor.ProcessAsync(query);
+            return result;
         }
 
         [HttpPost]
@@ -47,7 +46,7 @@ namespace Memoriser.App.Controllers
             }
 
             var command = new AddWordCommand(postData.Word, postData.Answers);
-            await _AddItemHandler.HandleAsync(command);
+            await _commandDispatcher.DispatchAsync(command);
             var currentUri = Url.RouteUrl(RouteData.Values);
             return new CreatedResult("", "");
         }

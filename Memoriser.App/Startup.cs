@@ -1,12 +1,7 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Memoriser.App.Commands;
-using Memoriser.App.Commands.Commands;
-using Memoriser.App.Commands.Handlers;
 using Memoriser.App.Query;
-using Memoriser.App.Query.Handlers;
-using Memoriser.App.Query.Queries;
-using Memoriser.ApplicationCore.Models;
 using Memoriser.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -33,16 +28,12 @@ namespace Memoriser.App
             services.AddDbContext<LearningItemContext>(options =>
                 options.UseSqlServer(Configuration["DefaultConnection"]));
 
-            services.AddTransient<LearningItemContext>();
-            services.AddTransient<IAsyncQueryHandler<GetWordsQuery, LearningItem[]>, GetWordsQueryHandler>();
-            services.AddTransient<IAsyncCommandHandler<AddWordCommand>, AddWordCommandHandler>();
-
             services.AddMvc();
 
             var containerBuilder = new ContainerBuilder();
+            containerBuilder.Populate(services);
             containerBuilder.RegisterModule<QueryModule>();
             containerBuilder.RegisterModule<CommandModule>();
-            containerBuilder.Populate(services);
             var container = containerBuilder.Build();
             return new AutofacServiceProvider(container);
         }

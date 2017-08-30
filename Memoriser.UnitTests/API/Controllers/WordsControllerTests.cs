@@ -23,8 +23,8 @@ namespace Memoriser.UnitTests.API.Controllers
                 new LearningItem("salut", new [] {"hello, goodbye" }),
                 new LearningItem("maison", "house")
             };
-            var mockHandler = new Mock<IAsyncQueryHandler<GetWordsQuery, LearningItem[]>>();
-            mockHandler.Setup(x => x.HandleAsync(It.IsAny<GetWordsQuery>())).Returns(Task.FromResult(words));
+            var mockHandler = new Mock<IQueryProcessor>();
+            mockHandler.Setup(x => x.ProcessAsync(It.IsAny<GetWordsQuery>())).Returns(Task.FromResult(words));
             var controller = new WordsController(mockHandler.Object, null);
 
             var result = await controller.Words();
@@ -43,13 +43,14 @@ namespace Memoriser.UnitTests.API.Controllers
                 Answers = answers
             };
             
-            var mockHandler = new Mock<IAsyncCommandHandler<AddWordCommand>>();
+            var mockHandler = new Mock<ICommandDispatcher>();
+            mockHandler.Setup(x => x.DispatchAsync(It.IsAny<AddWordCommand>())).Returns(Task.FromResult(0));
             var controller = new WordsController(null, mockHandler.Object);
 
             var result = await controller.AddWord(data);
 
             result.Should().BeOfType<CreatedResult>();
-            var createdResult = result as CreatedResult;
+            var createdResult = (CreatedResult)result;
             createdResult.StatusCode.Should().Be(201);
             createdResult.Location.Should().MatchRegex(@"\/Words\/[{(]?[0-9A-F]{8}[-]?([0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?");
         }
@@ -64,7 +65,8 @@ namespace Memoriser.UnitTests.API.Controllers
                 Word = word,
                 Answers = answers
             };
-            var mockHandler = new Mock<IAsyncCommandHandler<AddWordCommand>>();
+            var mockHandler = new Mock<ICommandDispatcher>();
+            mockHandler.Setup(x => x.DispatchAsync(It.IsAny<AddWordCommand>())).Returns(Task.FromResult(0));
             var controller = new WordsController(null, mockHandler.Object);
 
             var result = await controller.AddWord(data);

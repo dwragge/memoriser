@@ -1,6 +1,6 @@
 ﻿namespace Memoriser.App.Query
 {
-    public interface IQuery<TResult>
+    public interface IQuery<in TResult>
     {
     }
 }
