@@ -5,4 +5,5 @@ dist: trusty
 script:
  - (cd Memoriser.App && npm install)
  - dotnet build
- - (cd Memoriser.UnitTests && dotnet test --no-build --no-restore)
+ - (cd Memoriser.UnitTests && dotnet test -c Release)
+ - (cd Memoriser.IntegrationTests && dotnet test -c Release)
