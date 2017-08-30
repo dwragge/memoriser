@@ -16,6 +16,7 @@ namespace Memoriser.App.Controllers
     {
         private readonly IAsyncQueryHandler<GetWordsQuery, LearningItem[]> _getItemsHandler;
         private readonly IAsyncCommandHandler<AddWordCommand> _AddItemHandler;
+        private readonly IQueryHandlerResolver _queryResolver;
 
         public WordsController(IAsyncQueryHandler<GetWordsQuery, LearningItem[]> handler, IAsyncCommandHandler<AddWordCommand> addHandler1)
         {
@@ -27,7 +28,8 @@ namespace Memoriser.App.Controllers
         public async Task<LearningItem[]> Words()
         {
             var query = new GetWordsQuery();
-            return await _getItemsHandler.HandleAsync(query);
+            var handler = _queryResolver.Resolve(query);
+            return await handler.HandleAsync(query);
         }
 
         [HttpPost]
@@ -46,7 +48,7 @@ namespace Memoriser.App.Controllers
 
             var command = new AddWordCommand(postData.Word, postData.Answers);
             await _AddItemHandler.HandleAsync(command);
-            var currentUri = Request?.Path.Value ?? "";
+            var currentUri = Url.RouteUrl(RouteData.Values);
             return new CreatedResult("", "");
         }
     }

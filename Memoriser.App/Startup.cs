@@ -1,3 +1,5 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Memoriser.App.Commands;
 using Memoriser.App.Commands.Commands;
 using Memoriser.App.Commands.Handlers;
@@ -12,6 +14,7 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Memoriser.App
 {
@@ -25,7 +28,7 @@ namespace Memoriser.App
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<LearningItemContext>(options =>
                 options.UseSqlServer(Configuration["DefaultConnection"]));
@@ -35,6 +38,13 @@ namespace Memoriser.App
             services.AddTransient<IAsyncCommandHandler<AddWordCommand>, AddWordCommandHandler>();
 
             services.AddMvc();
+
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterModule<QueryModule>();
+            containerBuilder.RegisterModule<CommandModule>();
+            containerBuilder.Populate(services);
+            var container = containerBuilder.Build();
+            return new AutofacServiceProvider(container);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
