@@ -1,12 +1,12 @@
 ﻿using FluentAssertions;
 using Memoriser.App.Commands;
 using Memoriser.App.Commands.Commands;
-using Memoriser.App.Commands.Handlers;
 using Memoriser.App.Controllers;
+using Memoriser.App.Controllers.PostModels;
 using Memoriser.App.Query;
-using Memoriser.App.Query.Handlers;
 using Memoriser.App.Query.Queries;
 using Memoriser.ApplicationCore.Models;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Threading.Tasks;
 using Xunit;
@@ -23,7 +23,6 @@ namespace Memoriser.UnitTests.API.Controllers
                 new LearningItem("salut", new [] {"hello, goodbye" }),
                 new LearningItem("maison", "house")
             };
-
             var mockHandler = new Mock<IAsyncQueryHandler<GetWordsQuery, LearningItem[]>>();
             mockHandler.Setup(x => x.HandleAsync(It.IsAny<GetWordsQuery>())).Returns(Task.FromResult(words));
             var controller = new WordsController(mockHandler.Object, null);
@@ -33,12 +32,44 @@ namespace Memoriser.UnitTests.API.Controllers
             result.ShouldBeEquivalentTo(words);
         }
 
-        [Fact]
-        public async Task Should_AddWord()
+        [Theory]
+        [InlineData("éteindre", new[] { "turn off", "extinguish"})]
+        [InlineData("maître", new[] { "master" })]
+        public async Task Should_AddWord(string word, string[] answers)
         {
+            var data = new AddWordPostModel
+            {
+                Word = word,
+                Answers = answers
+            };
+            
             var mockHandler = new Mock<IAsyncCommandHandler<AddWordCommand>>();
             var controller = new WordsController(null, mockHandler.Object);
-            await controller.AddWord();
+
+            var result = await controller.AddWord(data);
+
+            result.Should().BeOfType<CreatedResult>();
+            var createdResult = result as CreatedResult;
+            createdResult.StatusCode.Should().Be(201);
+            createdResult.Location.Should().MatchRegex(@"\/Words\/[{(]?[0-9A-F]{8}[-]?([0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?");
+        }
+
+        [Theory]
+        [InlineData("éteindre", new[] { "abc", "123 a$c" })]
+        [InlineData("maître", new[] { "&&^", "@$@!" })]
+        public async Task Should_ErrorForInvalidWordData(string word, string[] answers)
+        {
+            var data = new AddWordPostModel
+            {
+                Word = word,
+                Answers = answers
+            };
+            var mockHandler = new Mock<IAsyncCommandHandler<AddWordCommand>>();
+            var controller = new WordsController(null, mockHandler.Object);
+
+            var result = await controller.AddWord(data);
+
+            result.Should().BeOfType<BadRequestObjectResult>();
         }
     }
 }
