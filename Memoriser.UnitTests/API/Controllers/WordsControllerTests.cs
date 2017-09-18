@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using Memoriser.App.Commands;
 using Memoriser.App.Commands.Commands;
 using Memoriser.App.Controllers;
 using Memoriser.App.Controllers.PostModels;
@@ -15,6 +14,13 @@ namespace Memoriser.UnitTests.API.Controllers
 {
     public class WordsControllerTests
     {
+        public Mock<IAsyncQueryHandler<FindItemsQuery, LearningItem[]>> MockFindItemsQueryHandler(LearningItem[] words)
+        {
+            var mock = new Mock<IAsyncQueryHandler<FindItemsQuery, LearningItem[]>>();
+            mock.Setup(x => x.QueryAsync(It.IsAny<FindItemsQuery>())).Returns(Task.FromResult(words));
+            return mock;
+        }
+
         [Fact]
         public async Task Should_ReturnAll()
         {
@@ -23,9 +29,8 @@ namespace Memoriser.UnitTests.API.Controllers
                 new LearningItem("salut", new [] {"hello, goodbye" }),
                 new LearningItem("maison", "house")
             };
-            var mockHandler = new Mock<IQueryProcessor>();
-            mockHandler.Setup(x => x.ProcessAsync(It.IsAny<GetWordsQuery>())).Returns(Task.FromResult(words));
-            var controller = new WordsController(mockHandler.Object, null);
+            var mockHandler = new MockQueryHandler<FindItemsQuery, LearningItem[]>().ReturnsForAll(words).Handler;
+            var controller = new WordsController(null, mockHandler);
 
             var result = await controller.Words();
 
@@ -42,13 +47,11 @@ namespace Memoriser.UnitTests.API.Controllers
                 Word = word,
                 Answers = answers
             };
-            var mockDispatcher = new Mock<ICommandDispatcher>();
-            mockDispatcher.Setup(x => x.DispatchAsync(It.IsAny<AddWordCommand>()))
-                .Returns(Task.FromResult(0));
-            var mockHandler = new Mock<IQueryProcessor>();
-            mockHandler.Setup(x => x.ProcessAsync(It.IsAny<GetWordByNameQuery>()))
-                .Returns(Task.FromResult(new LearningItem("nouvelle", "new")));
-            var controller = new WordsController(mockHandler.Object, mockDispatcher.Object);
+            var mockCommandHandler = new MockCommandHandler<AddWordCommand>().ReturnsForAll().Handler;
+            var mockQueryHandler = new MockQueryHandler<FindItemsQuery, LearningItem[]>()
+                .ReturnsForAll(new [] {new LearningItem(word, answers) })
+                .Handler;
+            var controller = new WordsController(mockCommandHandler, mockQueryHandler);
 
             var result = await controller.AddWord(data);
 
@@ -58,19 +61,18 @@ namespace Memoriser.UnitTests.API.Controllers
             createdResult.Location.Should().MatchRegex(@"\/Words\/[{(]?[0-9A-Fa-f]{8}[-]?([0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}[)}]?");
         }
 
-        [Theory]
-        [InlineData("éteindre", new[] { "abc", "123 a$c" })]
-        [InlineData("maître", new[] { "&&^", "@$@!" })]
-        public async Task Should_ErrorForInvalidWordData(string word, string[] answers)
+        [Fact]
+        public async Task Should_Error_ForInvalidModelState()
         {
             var data = new AddWordPostModel
             {
-                Word = word,
-                Answers = answers
+                Word = "Bonjour",
+                Answers = new []{"Hello", "Good Morning"}
             };
-            var mockHandler = new Mock<ICommandDispatcher>();
-            mockHandler.Setup(x => x.DispatchAsync(It.IsAny<AddWordCommand>())).Returns(Task.FromResult(0));
-            var controller = new WordsController(null, mockHandler.Object);
+
+            var mockHandler = new MockCommandHandler<AddWordCommand>().ReturnsForAll().Handler;
+            var controller = new WordsController(mockHandler, null);
+            controller.ModelState.AddModelError(string.Empty, "Something is wrong!");
 
             var result = await controller.AddWord(data);
 

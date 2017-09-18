@@ -1,4 +1,5 @@
-﻿using Memoriser.App.Query.Queries;
+﻿using System.Linq;
+using Memoriser.App.Query.Queries;
 using Memoriser.ApplicationCore.Models;
 using Memoriser.Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -6,17 +7,18 @@ using System.Threading.Tasks;
 
 namespace Memoriser.App.Query.Handlers
 {
-    public class GetWordsQueryHandler : IAsyncQueryHandler<GetWordsQuery, LearningItem[]>
+    public class FindItemsQueryHandler : IAsyncQueryHandler<FindItemsQuery, LearningItem[]>
     {
         private readonly LearningItemContext _context;
-        public GetWordsQueryHandler(LearningItemContext context)
+        public FindItemsQueryHandler(LearningItemContext context)
         {
             _context = context;
         }
 
-        public async Task<LearningItem[]> HandleAsync(GetWordsQuery query)
+        public async Task<LearningItem[]> QueryAsync(FindItemsQuery query)
         {
             return await _context.LearningItems
+                .Where(query.Predicate)
                 .Include(x => x.Interval)
                 .AsNoTracking()
                 .ToArrayAsync();

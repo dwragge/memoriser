@@ -14,20 +14,20 @@ namespace Memoriser.App.Controllers
     [Route("api/[controller]")]
     public class WordsController : Controller
     {
-        private readonly ICommandDispatcher _commandDispatcher;
-        private readonly IQueryProcessor _queryProcessor;
+        private readonly IAsyncCommandHandler<AddWordCommand> _addWordCommandHandler;
+        private readonly IAsyncQueryHandler<FindItemsQuery, LearningItem[]> _findItemsQueryHandler;
 
-        public WordsController(IQueryProcessor queryProcessor, ICommandDispatcher commandDispatcher)
+        public WordsController(IAsyncCommandHandler<AddWordCommand> addWordHandler,
+                                IAsyncQueryHandler<FindItemsQuery, LearningItem[]> findQueryHandler)
         {
-            _commandDispatcher = commandDispatcher;
-            _queryProcessor = queryProcessor;
+            _addWordCommandHandler = addWordHandler;
+            _findItemsQueryHandler = findQueryHandler;
         }
 
         [HttpGet]
         public async Task<LearningItem[]> Words()
-        {
-            var query = new GetWordsQuery();
-            var result = await _queryProcessor.ProcessAsync(query);
+        { 
+            var result = await _findItemsQueryHandler.QueryAsync(FindItemsQuery.All);
             return result;
         }
 
@@ -39,17 +39,12 @@ namespace Memoriser.App.Controllers
                 return new BadRequestObjectResult(ModelState);
             }
 
-            var validWords = postData.Answers.ToList().TrueForAll(word => word.IsOnlyLetterCharacters());
-            if (!validWords)
-            {
-                return new BadRequestObjectResult(postData.Answers);
-            }
-
             var command = new AddWordCommand(postData.Word, postData.Answers);
-            await _commandDispatcher.DispatchAsync(command);
+            await _addWordCommandHandler.HandleAsync(command);
 
-            var query = new GetWordByNameQuery(postData.Word);
-            var createdItem = await _queryProcessor.ProcessAsync(query);
+            var query = FindItemsQuery.ByWord(postData.Word);
+            var queryResult = await _findItemsQueryHandler.QueryAsync(query);
+            var createdItem = queryResult.Single();
 
             string currentUri = Request?.Path ?? "/Words";
             return new CreatedResult(currentUri.JoinPaths(createdItem.Id.ToString()), createdItem);

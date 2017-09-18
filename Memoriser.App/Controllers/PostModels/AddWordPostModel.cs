@@ -9,7 +9,7 @@ namespace Memoriser.App.Controllers.PostModels
         public string Word { get; set; }
 
         [Required]
-        [MinLength(1)]
+        [WordArray]
         public string[] Answers { get; set; }
     }
 }
