@@ -11,10 +11,10 @@ using FluentAssertions;
 
 namespace Memoriser.UnitTests.API.Queries
 {
-    public class GetWordsQueryHandlerTests
+    public class GetWordsQueryHandlerTestFixture
     {
-        private readonly DbContextOptions<LearningItemContext> _options;
-        private readonly List<LearningItem> _items = new List<LearningItem>
+        public readonly DbContextOptions<LearningItemContext> Options;
+        public readonly List<LearningItem> Items = new List<LearningItem>
         {
             new LearningItem("salut", "hello"),
             new LearningItem("générer", "generate"),
@@ -23,40 +23,48 @@ namespace Memoriser.UnitTests.API.Queries
                 Interval = RepetitionInterval.FromValues(3, 3.0f)
             }
         };
-
-        public GetWordsQueryHandlerTests()
+        public GetWordsQueryHandlerTestFixture()
         {
-            _options = new DbContextOptionsBuilder<LearningItemContext>()
+            Options = new DbContextOptionsBuilder<LearningItemContext>()
                 .UseInMemoryDatabase("Get_All")
                 .Options;
 
-            using (var context = new LearningItemContext(_options))
+            using (var context = new LearningItemContext(Options))
             {
-                context.AddRange(_items);
+                context.AddRange(Items);
                 context.SaveChanges();
             }
+        }
+    }
+
+    public class GetWordsQueryHandlerTests : IClassFixture<GetWordsQueryHandlerTestFixture>
+    {
+        private readonly GetWordsQueryHandlerTestFixture _fixture;
+        public GetWordsQueryHandlerTests(GetWordsQueryHandlerTestFixture textFixture)
+        {
+            _fixture = textFixture;
         }
 
         [Fact]
         public async Task Should_Return_AllItems()
         {
-            using (var context = new LearningItemContext(_options))
+            using (var context = new LearningItemContext(_fixture.Options))
             {
                 var handler = new FindItemsQueryHandler(context);
                 var result = await handler.QueryAsync(FindItemsQuery.All);
-                result.ToList().ShouldAllBeEquivalentTo(_items);
+                result.ToList().ShouldAllBeEquivalentTo(_fixture.Items);
             }
         }
 
         [Fact]
         public async Task Should_Return_BasedOnQuery()
         {
-            using (var context = new LearningItemContext(_options))
+            using (var context = new LearningItemContext(_fixture.Options))
             {
                 var handler = new FindItemsQueryHandler(context);
                 var result = await handler.QueryAsync(FindItemsQuery.ByWord("salut"));
                 var item = result.Single();
-                item.ShouldBeEquivalentTo(_items[0]);
+                item.ShouldBeEquivalentTo(_fixture.Items[0]);
             }
         }
     }
