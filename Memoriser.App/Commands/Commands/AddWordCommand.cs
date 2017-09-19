@@ -1,4 +1,7 @@
-﻿namespace Memoriser.App.Commands.Commands
+﻿using System;
+using System.Linq;
+
+namespace Memoriser.App.Commands.Commands
 {
     public class AddWordCommand : ICommand
     {
@@ -7,8 +10,8 @@
 
         public AddWordCommand(string word, string[] acceptedAnswers)
         {
-            Word = word;
-            AcceptedAnswers = acceptedAnswers;
+            Word = word.ReduceWhitespace().ToLowerInvariant();
+            AcceptedAnswers = acceptedAnswers.Select(x => x.ReduceWhitespace().ToLowerInvariant()).ToArray();
         }
     }
 }

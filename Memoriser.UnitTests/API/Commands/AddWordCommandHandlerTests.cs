@@ -9,7 +9,6 @@ using Xunit;
 
 namespace Memoriser.UnitTests.API.Commands
 {
-
     public class AddWordCommandHandlerTests
     {
         [Theory]

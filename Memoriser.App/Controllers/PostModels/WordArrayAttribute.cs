@@ -11,15 +11,14 @@ namespace Memoriser.App.Controllers.PostModels
             var array = value as string[];
             if (array == null) return new ValidationResult("Array can't be null");
             if (array.Length == 0) return new ValidationResult("Array can't be empty");
-
-            var wordRegex = new Regex(@"^[\p{L} | \s]*$");
+            
             foreach (var str in array)
             {
                 if (string.IsNullOrWhiteSpace(str))
                 {
                     return new ValidationResult($"Entry {str} is not valid");
                 }
-                if (!wordRegex.IsMatch(str))
+                if (!str.IsOnlyLetterCharacters())
                 {
                     return new ValidationResult($"Entry {str} is not valid");
                 }
