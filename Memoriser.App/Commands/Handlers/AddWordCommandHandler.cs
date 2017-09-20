@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Memoriser.App.Commands.Commands;
-using Memoriser.ApplicationCore.Models;
+using Memoriser.ApplicationCore.LearningItems;
 using Memoriser.Infrastructure;
 
 namespace Memoriser.App.Commands.Handlers

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Memoriser.ApplicationCore.LearningItems;
 
-namespace Memoriser.ApplicationCore.Models
+namespace Memoriser.ApplicationCore.LearningItems
 {
     public class LearningItem
     {

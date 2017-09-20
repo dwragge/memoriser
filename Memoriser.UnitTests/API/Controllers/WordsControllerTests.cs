@@ -4,10 +4,10 @@ using Memoriser.App.Controllers;
 using Memoriser.App.Controllers.PostModels;
 using Memoriser.App.Query;
 using Memoriser.App.Query.Queries;
-using Memoriser.ApplicationCore.Models;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Threading.Tasks;
+using Memoriser.ApplicationCore.LearningItems;
 using Xunit;
 
 namespace Memoriser.UnitTests.API.Controllers

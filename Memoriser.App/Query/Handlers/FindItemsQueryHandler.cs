@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using Memoriser.App.Query.Queries;
-using Memoriser.ApplicationCore.Models;
 using Memoriser.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using Memoriser.ApplicationCore.LearningItems;
 
 namespace Memoriser.App.Query.Handlers
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Memoriser.ApplicationCore.Models;
+using Memoriser.ApplicationCore.LearningItems;
 
 namespace Memoriser.App.Query.Queries
 {

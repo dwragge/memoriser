@@ -1,5 +1,4 @@
 ﻿using Memoriser.ApplicationCore.LearningItems;
-using Memoriser.ApplicationCore.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Memoriser.Infrastructure

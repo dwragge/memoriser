@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using Memoriser.App.Commands;
 using Memoriser.App.Commands.Commands;
 using Memoriser.App.Query;
-using Memoriser.ApplicationCore.Models;
 using Memoriser.App.Controllers.PostModels;
 using System.Linq;
 using System;
+using Memoriser.ApplicationCore.LearningItems;
 
 namespace Memoriser.App.Controllers
 {

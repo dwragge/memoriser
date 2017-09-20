@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
-using Memoriser.ApplicationCore.Models;
 using System.Linq;
 using Memoriser.Infrastructure;
 using Microsoft.EntityFrameworkCore;
