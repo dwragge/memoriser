@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Memoriser.App.Query.Handlers;
 using Memoriser.App.Query.Queries;
 using FluentAssertions;
+using Memoriser.ApplicationCore.LearningItems;
 
 namespace Memoriser.UnitTests.API.Queries
 {

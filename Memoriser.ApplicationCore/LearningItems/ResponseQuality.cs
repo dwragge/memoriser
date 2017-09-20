@@ -1,4 +1,4 @@
-﻿namespace Memoriser.ApplicationCore.Models
+﻿namespace Memoriser.ApplicationCore.LearningItems
 {
     public enum ResponseQuality
     {
