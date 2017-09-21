@@ -4,6 +4,7 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="coveralls.io" Version="1.4.1" />
     <PackageReference Include="coveralls.net" Version="0.412" />
     <PackageReference Include="FluentAssertions" Version="4.19.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.0.0" />
